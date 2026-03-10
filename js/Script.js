@@ -29,10 +29,49 @@ mapa.on('click', function(e) {
     console.log("Latitude:", latitude, "Longitude:", longitude);
 });
 
-
+// Função para pesquisar localização usando a API de geocodificação do OpenStreetMap    
 async function PesquisarLocalizacao() {
 
+    const endereco = document.getElementById('inputLoc').value;
+    if(endereco.trim() === ""){
+        alert("Por favor, insira um endereço.");
+        return;
+    }
+
+    // Nominatim API para geocoding
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
+
+    try {
+        const resposta = await fetch(url);
+        const dados = await resposta.json();
+
+        if(dados.length > 0) {
+            const lat = dados[0].lat;
+            const lon = dados[0].lon;
+
+            // Remove marcador antigo
+            if(marcadorAtual) mapa.removeLayer(marcadorAtual);
+
+            // Cria marcador no local encontrado
+            marcadorAtual = L.marker([lat, lon]).addTo(mapa)
+                .bindPopup(endereco).openPopup();
+
+                marcadorAtual.bindPopup(
+                "Latitude: " + lat + "<br>Longitude: " + lon
+            ).openPopup();
 
 
-    
+            // Move o mapa para o local
+            mapa.setView([lat, lon], 15);
+        } else {
+            alert("Endereço não encontrado");
+        }
+    } catch(err) {
+        console.error("Erro na busca:", err);
+    }
 }
+
+// Evento do botão
+document.getElementById("buscar").addEventListener("click", PesquisarLocalizacao);
+
+
