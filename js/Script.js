@@ -1,38 +1,38 @@
-// It's recommended to load Leaflet via <script> and <link> tags in your HTML file,
-// rather than fetching it with JavaScript.
-//
-// In your HTML <head>:
-// <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-// <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-//
-// Then, you can call this function, for example, when the DOM is loaded.
+// Inicializa o mapa no centro de São Paulo
+let mapa = L.map('mapa').setView([-23.5489, -46.6388], 13);
 
-function inicializarMapa(){
-    // Check if the Leaflet library (L) is loaded
-    if (typeof L === 'undefined') {
-        console.error("Leaflet library not found. Make sure it's loaded in your HTML.");
-        return;
+// Carrega os tiles do OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(mapa);
+
+let marcadorAtual = null;
+
+// Evento de clique no mapa
+mapa.on('click', function(e) {
+    const latitude = e.latlng.lat;
+    const longitude = e.latlng.lng;
+
+    // Remove marcador anterior, se existir
+    if (marcadorAtual) {
+        mapa.removeLayer(marcadorAtual);
     }
 
-    // Initialize the map and set its view to a chosen geographical coordinates and zoom level
-    let mapa = L.map('mapa').setView([-23.5489, -46.6388], 13);
+    // Cria novo marcador
+    marcadorAtual = L.marker([latitude, longitude]).addTo(mapa);
 
-    // Add a tile layer to the map (e.g., OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mapa);
+    // Mostra latitude e longitude em popup
+    marcadorAtual.bindPopup(
+        "Latitude: " + latitude + "<br>Longitude: " + longitude
+    ).openPopup();
 
-    let marcador; // Variable to hold the marker instance
+    console.log("Latitude:", latitude, "Longitude:", longitude);
+});
 
-    // Set up a click event listener on the map
-    mapa.on('click', function(e) {
-        // If a marker already exists, remove it from the map
-        if (marcador) {
-            mapa.removeLayer(marcador);
-        }
 
-        // Create a new marker at the clicked location and add it to the map
-        marcador = L.marker(e.latlng).addTo(mapa);
-        console.log("Marcador adicionado em:", e.latlng);
-    });
+async function PesquisarLocalizacao() {
+
+
+
+    
 }

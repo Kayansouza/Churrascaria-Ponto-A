@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Churrascaria</title>
+
+<!-- CSS do Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+#mapa {
+    height: 500px;
+    width: 50%;         /*Necessário para definir a largura do mapa, fora do css. */
+    display: flex;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Escolha um local no mapa</h2>
+<div id="estrutura_mapa">
+    <input id="inputLoc" type="text" placeholder="Digite a localização">
+
+    <div id="mapa"></div>
+</div>
+
+<!-- JS do Leaflet -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Seu JS -->
+<script src="./js/Script.js"></script>
+
+</body>
+</html>
