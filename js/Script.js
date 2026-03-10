@@ -1,42 +1,38 @@
+// It's recommended to load Leaflet via <script> and <link> tags in your HTML file,
+// rather than fetching it with JavaScript.
+//
+// In your HTML <head>:
+// <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+// <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+//
+// Then, you can call this function, for example, when the DOM is loaded.
 
-function buscarApi(){
+function inicializarMapa(){
+    // Check if the Leaflet library (L) is loaded
+    if (typeof L === 'undefined') {
+        console.error("Leaflet library not found. Make sure it's loaded in your HTML.");
+        return;
+    }
 
-const urlApi = "https://unpkg.com/leaflet/dist/leaflet.js"//URL da api
-const resposta = fetch(urlApi)
-
-if(resposta.status == 200){
-    
-    //Estruturação de código
-
+    // Initialize the map and set its view to a chosen geographical coordinates and zoom level
     let mapa = L.map('mapa').setView([-23.5489, -46.6388], 13);
 
-    L.titleLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Add a tile layer to the map (e.g., OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapa);
 
+    let marcador; // Variable to hold the marker instance
 
-    var clique
-
-
+    // Set up a click event listener on the map
     mapa.on('click', function(e) {
-        var latitude = e.latlng.lattitude;      //Latitude e longitude para adicionar marcador no mapa
-        var longitude = e.latlng.longitude;
+        // If a marker already exists, remove it from the map
+        if (marcador) {
+            mapa.removeLayer(marcador);
+        }
+
+        // Create a new marker at the clicked location and add it to the map
+        marcador = L.marker(e.latlng).addTo(mapa);
+        console.log("Marcador adicionado em:", e.latlng);
     });
-
-    if(clique == true){
-        mapa.removeLayer(clique);    //Verificação de clique no mapa para adicionar marcador
-    }
-
-
-    clique = L.marker([latitude, longitude]).addTo(mapa);
-
-
-   console.log("Api encontrada")
-                                            //Verificação de resposta da api
-}else{
-    console.log("Api não encontrada")
 }
-
-}
-
-
